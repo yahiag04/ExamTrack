@@ -1,0 +1,142 @@
+<%- include('../partials/header', { title: 'Statistiche corso - ExamTrack' }) %>
+
+<div class="container py-4">
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div>
+            <h1 class="h4 fw-bold mb-1">
+              <i class="bi bi-bar-chart-fill me-2 text-primary"></i>
+              Statistiche corso
+            </h1>
+            <% if (corso) { %>
+              <p class="text-muted small mb-0">
+                <strong><%= corso.nome_insegnamento %></strong><br />
+                Codice: <code><%= corso.codice_insegnamento %></code>
+              </p>
+            <% } else { %>
+              <p class="text-muted small mb-0">
+                Dettagli corso non disponibili.
+              </p>
+            <% } %>
+          </div>
+
+          <div class="mt-3 mt-md-0 d-flex gap-2">
+            <a href="/professore/dashboard" class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-arrow-left me-1"></i> Dashboard
+            </a>
+            <a href="/professore/nuovo_voto" class="btn btn-sm btn-primary">
+              <i class="bi bi-plus-circle me-1"></i> Inserisci voto
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MESSAGGI -->
+  <div class="row justify-content-center mb-3">
+    <div class="col-lg-8">
+      <% if (error) { %>
+        <div class="alert alert-danger small mb-2">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <% if (success) { %>
+        <div class="alert alert-success small mb-2">
+          <%= success %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- STATISTICHE -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+          <% 
+            const totale = (numSuperati || 0) + (numNonSuperati || 0);
+            const percSuperati = totale > 0 ? ((numSuperati / totale) * 100).toFixed(1) : 0;
+            const percNonSuperati = totale > 0 ? ((numNonSuperati / totale) * 100).toFixed(1) : 0;
+          %>
+
+          <h2 class="h6 fw-bold mb-3">
+            <i class="bi bi-clipboard-data me-2 text-primary"></i>
+            Panoramica esami
+          </h2>
+
+          <% if (totale === 0) { %>
+            <p class="text-muted small mb-0">
+              Non sono ancora presenti esami completi registrati per questo corso.
+            </p>
+          <% } else { %>
+
+            <!-- NUMERI -->
+            <div class="row mb-3">
+              <div class="col-6">
+                <div class="border rounded-3 p-3 h-100">
+                  <p class="text-muted text-uppercase small mb-1">Esami superati</p>
+                  <h3 class="h4 mb-0 text-success"><%= numSuperati %></h3>
+                  <p class="small text-muted mb-0"><%= percSuperati %>% del totale</p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="border rounded-3 p-3 h-100">
+                  <p class="text-muted text-uppercase small mb-1">Esami non superati</p>
+                  <h3 class="h4 mb-0 text-danger"><%= numNonSuperati %></h3>
+                  <p class="small text-muted mb-0"><%= percNonSuperati %>% del totale</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- PROGRESS -->
+            <h3 class="h6 fw-bold mb-2">
+              <i class="bi bi-pie-chart-fill me-2 text-primary"></i>
+              Distribuzione esiti
+            </h3>
+
+            <div class="mb-1 d-flex justify-content-between small">
+              <span class="text-success">Superati</span>
+              <span class="text-danger">Non superati</span>
+            </div>
+
+            <div class="progress" style="height: 1.5rem;">
+              <div 
+                class="progress-bar bg-success" 
+                role="progressbar" 
+                style="width: <%= percSuperati %>%"
+                aria-valuenow="<%= percSuperati %>" 
+                aria-valuemin="0" 
+                aria-valuemax="100">
+                <%= percSuperati %>% 
+              </div>
+              <div 
+                class="progress-bar bg-danger" 
+                role="progressbar" 
+                style="width: <%= percNonSuperati %>%"
+                aria-valuenow="<%= percNonSuperati %>" 
+                aria-valuemin="0" 
+                aria-valuemax="100">
+                <%= percNonSuperati %>% 
+              </div>
+            </div>
+
+            <p class="text-muted small mt-2 mb-0">
+              Totale esami considerati: <strong><%= totale %></strong>
+              (solo tentativi completi del corso, con esito registrato).
+            </p>
+
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<%- include('../partials/footer') %>

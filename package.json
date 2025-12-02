@@ -1,0 +1,22 @@
+{
+  "name": "it.unibs.basidati.examtrack",
+  "version": "1.0.0",
+  "description": "Piattaforma per la memorizzazione ed inserimento dei voti degli studenti",
+  "license": "ISC",
+  "author": "Yahia Ghallale",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "nodemon": "^3.1.11",
+    "pg": "^8.16.3"
+  }
+}

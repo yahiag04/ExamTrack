@@ -1,0 +1,124 @@
+<%- include('../partials/header', { title: 'Gestione corsi - ExamTrack' }) %>
+
+<div class="container py-4">
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0">
+        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div>
+            <h1 class="h4 fw-bold mb-1">Gestione corsi</h1>
+            <p class="text-muted small mb-0">
+              Visualizza e gestisci gli insegnamenti presenti sulla piattaforma.
+            </p>
+          </div>
+
+          <a href="/amministratore" class="btn btn-sm btn-outline-secondary mt-3 mt-md-0">
+            <i class="bi bi-arrow-left me-1"></i>
+            Torna alla dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABELLA CORSI -->
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+          <!-- Titolo e filtro -->
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
+            <div>
+              <h2 class="h6 fw-bold mb-1">Elenco corsi</h2>
+              <p class="text-muted small mb-0">
+                Totale corsi: <strong><%= corsi ? corsi.length : 0 %></strong>
+              </p>
+            </div>
+
+            <div class="input-group input-group-sm" style="max-width: 260px;">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input 
+                type="text" 
+                id="filtroCorsi" 
+                class="form-control"
+                placeholder="Filtra per nome corso o docente..."
+              >
+            </div>
+          </div>
+
+          <!-- Nessun corso -->
+          <% if (!corsi || corsi.length === 0) { %>
+            <p class="text-muted small mb-0">Nessun corso presente.</p>
+          <% } else { %>
+
+            <!-- Tabella -->
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0" id="tabellaCorsi">
+                <thead class="table-light">
+                  <tr>
+                    <th>Codice</th>
+                    <th>Nome corso</th>
+                    <th>CFU</th>
+                    <th>Docente</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% corsi.forEach(c => { %>
+                    <tr>
+                      <td class="small">
+                        <code><%= c.codice_insegnamento %></code>
+                      </td>
+
+                      <td class="small">
+                        <%= c.nome %>
+                      </td>
+
+                      <td class="small">
+                        <%= c.cfu %>
+                      </td>
+
+                      <td class="small">
+                        <% if (c.nome_prof && c.cognome_prof) { %>
+                          <%= c.nome_prof %> <%= c.cognome_prof %>
+                        <% } else { %>
+                          -
+                        <% } %>
+                      </td>
+
+            
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FILTRO -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('filtroCorsi');
+    const table = document.getElementById('tabellaCorsi');
+
+    if (!input || !table) return;
+
+    input.addEventListener('input', () => {
+      const filtro = input.value.toLowerCase();
+
+      table.querySelectorAll('tbody tr').forEach(tr => {
+        const testoRiga = tr.innerText.toLowerCase();
+        tr.classList.toggle('d-none', !testoRiga.includes(filtro));
+      });
+    });
+  });
+</script>
+
+<%- include('../partials/footer') %>

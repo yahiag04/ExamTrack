@@ -1,0 +1,181 @@
+<%- include('../partials/header', { title: 'Crea nuovo utente - ExamTrack' }) %>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-0 admin-card">
+        <div class="card-body">
+          <h1 class="h5 fw-bold mb-3">
+            <i class="bi bi-person-plus-fill me-2 text-primary"></i>
+            Crea nuovo utente
+          </h1>
+
+          <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger py-2 small"><%= error %></div>
+          <% } %>
+
+          <% if (typeof success !== 'undefined' && success) { %>
+            <div class="alert alert-success py-2 small"><%= success %></div>
+          <% } %>
+
+          <form method="POST" action="/amministratore/creazione_utente" class="mt-3">
+
+            <!-- area comune a tutti gli utenti-->
+            <div class="mb-3">
+              <label class="form-label" for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="ruolo">Ruolo</label>
+              <select id="ruolo" name="ruolo" class="form-select" required>
+                <option value="">Seleziona ruolo</option>
+                <option value="studente">Studente</option>
+                <option value="professore">Professore</option>
+                <option value="amministratore">Amministratore</option>
+              </select>
+            </div>
+
+            <!-- sezione studente -->
+            <div id="campo-studente" class="border-top pt-3 mt-3 d-none">
+              <h2 class="h6 fw-bold mb-2">Dati studente</h2>
+
+              <div class="mb-3">
+                <label class="form-label" for="matricola">Matricola</label>
+                <input
+                  type="number"
+                  id="matricola"
+                  name="matricola"
+                  class="form-control student-input"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="nome_studente">Nome</label>
+                <input
+                  type="text"
+                  id="nome_studente"
+                  name="nome_studente"
+                  class="form-control student-input"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="cognome_studente">Cognome</label>
+                <input
+                  type="text"
+                  id="cognome_studente"
+                  name="cognome_studente"
+                  class="form-control student-input"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="corso">Corso di laurea</label>
+                <input
+                  type="text"
+                  id="corso"
+                  name="corso"
+                  class="form-control student-input"
+                />
+              </div>
+            </div>
+
+            <!-- sezione professore -->
+            <div id="campo-professore" class="border-top pt-3 mt-3 d-none">
+              <h2 class="h6 fw-bold mb-2">Dati professore</h2>
+
+              <div class="mb-3">
+                <label class="form-label" for="nome_prof">Nome</label>
+                <input
+                  type="text"
+                  id="nome_prof"
+                  name="nome_prof"
+                  class="form-control prof-input"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="cognome_prof">Cognome</label>
+                <input
+                  type="text"
+                  id="cognome_prof"
+                  name="cognome_prof"
+                  class="form-control prof-input"
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3">
+              Crea utente
+            </button>
+          </form>
+
+          <div class="text-end mt-3">
+            <a href="/amministratore" class="small text-muted">
+              Torna all’area amministratore
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const selezioneRuolo = document.getElementById('ruolo');
+  const studenteArea= document.getElementById('campo-studente');
+  const professoreArea = document.getElementById('campo-professore');
+
+  const inputStudente = document.querySelectorAll('.student-input');
+  const inputProf = document.querySelectorAll('.prof-input');
+
+  function aggiornaCampiRuolo() {
+    const ruolo = selezioneRuolo.value;
+
+    
+    studenteArea.classList.add('d-none');
+    professoreArea.classList.add('d-none');
+    inputStudente.forEach(i => i.disabled = true);
+    inputProf.forEach(i => i.disabled = true);
+
+    if (ruolo === 'studente') {
+      studenteArea.classList.remove('d-none');
+      inputStudente.forEach(i => i.disabled = false);
+    } else if (ruolo === 'professore') {
+      professoreArea.classList.remove('d-none');
+      inputProf.forEach(i => i.disabled = false);
+    }
+  }
+
+  selezioneRuolo.addEventListener('change', aggiornaCampiRuolo);
+</script>
+
+<%- include('../partials/footer') %>

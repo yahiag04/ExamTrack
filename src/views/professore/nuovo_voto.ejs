@@ -1,0 +1,208 @@
+<%- include('../partials/header', { title: 'Inserimento voti - ExamTrack' }) %>
+
+<div class="container py-4">
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div>
+            <h1 class="h4 fw-bold mb-1">Inserimento voti</h1>
+
+            <% if (insegnamento) { %>
+              <p class="text-muted small mb-0">
+                Insegnamento: 
+                <strong><%= insegnamento.nome %></strong>
+                (<code><%= insegnamento.codice_insegnamento %></code>)
+              </p>
+            <% } else { %>
+              <p class="text-muted small mb-0">
+                Inserisci i voti per gli studenti del tuo corso.
+              </p>
+            <% } %>
+          </div>
+
+          <a href="/professore/dashboard" class="btn btn-sm btn-outline-secondary mt-3 mt-md-0">
+            <i class="bi bi-arrow-left me-1"></i>
+            Torna alla dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+          <% if (error) { %>
+            <div class="alert alert-danger small"><%= error %></div>
+          <% } %>
+
+          <% if (success) { %>
+            <div class="alert alert-success small"><%= success %></div>
+          <% } %>
+
+          <form method="POST" action="/professore/nuovo_voto">
+
+            <!-- Matricola studente -->
+            <div class="mb-3">
+              <label class="form-label">Matricola studente</label>
+              <input
+                type="number"
+                name="matricola"
+                class="form-control"
+                required
+                placeholder="Es. 745716"
+                value="<%= formData && formData.matricola ? formData.matricola : '' %>"
+              >
+              <div class="form-text small">
+                Inserisci la matricola dello studente iscritto all’esame.
+              </div>
+            </div>
+
+            <!-- Corso -->
+            <div class="mb-3">
+              <label class="form-label">Corso</label>
+              <input
+                type="text"
+                class="form-control"
+                value="<%= insegnamento ? insegnamento.nome : '' %>"
+                disabled
+              >
+              <% if (insegnamento) { %>
+                <input type="hidden" name="codice_insegnamento" value="<%= insegnamento.codice_insegnamento %>">
+              <% } %>
+            </div>
+
+            <!-- Tipo tentativo -->
+            <div class="mb-3">
+              <label class="form-label">Tipo tentativo</label>
+              <div class="d-flex gap-3 small">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="tipo_tentativo"
+                    id="tent_parziale"
+                    value="parziale"
+                    <%= formData && formData.tipo_tentativo === 'parziale' ? 'checked' : '' %>
+                    required
+                  >
+                  <label class="form-check-label" for="tent_parziale">
+                    Parziale
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="tipo_tentativo"
+                    id="tent_completo"
+                    value="completo"
+                    <%= !formData || formData.tipo_tentativo === 'completo' ? 'checked' : '' %>
+                  >
+                  <label class="form-check-label" for="tent_completo">
+                    Completo
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Presenza -->
+            <div class="mb-3">
+              <label class="form-label">Presenza</label>
+              <div class="d-flex gap-3 small">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="presenza"
+                    id="presente"
+                    value="true"
+                    <%= !formData || formData.presenza === 'true' ? 'checked' : '' %>
+                    required
+                  >
+                  <label class="form-check-label" for="presente">
+                    Presente
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="presenza"
+                    id="assente"
+                    value="false"
+                    <%= formData && formData.presenza === 'false' ? 'checked' : '' %>
+                  >
+                  <label class="form-check-label" for="assente">
+                    Assente
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Voto -->
+            <div class="mb-3">
+              <label class="form-label">Voto</label>
+              <input
+                type="number"
+                name="voto"
+                class="form-control"
+                min="0"
+                max="30"
+                placeholder="Es. 28"
+                value="<%= formData && formData.voto ? formData.voto : '' %>"
+              >
+              <div class="form-text small">
+                Lascia vuoto se lo studente è assente o il tentativo non prevede ancora un voto finale.
+              </div>
+            </div>
+
+            <!-- Data svolgimento -->
+            <div class="mb-3">
+              <label class="form-label">Data svolgimento</label>
+              <input
+                type="date"
+                name="data_svolgimento"
+                class="form-control"
+                value="<%= formData && formData.data_svolgimento ? formData.data_svolgimento : '' %>"
+                required
+              >
+            </div>
+
+            <!-- Note -->
+            <div class="mb-4">
+              <label class="form-label">Note (opzionale)</label>
+              <textarea
+                name="note"
+                rows="3"
+                class="form-control"
+                placeholder="Note sul tentativo, eventuali commenti, appelli particolari..."
+              ><%= formData && formData.note ? formData.note : '' %></textarea>
+            </div>
+
+            <!-- Bottoni -->
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check2-circle me-1"></i>
+                Salva voto
+              </button>
+
+              <a href="/professore/dashboard" class="btn btn-outline-secondary btn-sm">
+                Annulla
+              </a>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<%- include('../partials/footer') %>

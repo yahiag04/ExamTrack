@@ -1,0 +1,137 @@
+<%- include('../partials/header', { title: 'Gestione studenti - ExamTrack' }) %>
+
+<div class="container py-4">
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0">
+        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+          <div>
+            <h1 class="h4 fw-bold mb-1">
+              Gestione studenti
+            </h1>
+            <p class="text-muted mb-0 small">
+              Visualizza e gestisci gli studenti associati agli account della piattaforma.
+            </p>
+          </div>
+          <div class="mt-3 mt-md-0 text-md-end">
+            <a href="/amministratore" class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-arrow-left me-1"></i>
+              Torna all’area amministratore
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+          <!-- filtro  -->
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
+            <div>
+              <h2 class="h6 fw-bold mb-1">Elenco studenti</h2>
+              <p class="text-muted small mb-0">
+                Totale studenti: 
+                <strong><%= studenti && studenti.length ? studenti.length : 0 %></strong>
+              </p>
+            </div>
+            <div class="d-flex gap-2">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">
+                  <i class="bi bi-search"></i>
+                </span>
+                <input 
+                  type="text" 
+                  id="filtroStudenti" 
+                  class="form-control" 
+                  placeholder="Filtra per nome, matricola o corso..."
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabella studenti -->
+          <% if (!studenti || studenti.length === 0) { %>
+            <p class="text-muted small mb-0">
+              Nessuno studente registrato al momento.
+            </p>
+          <% } else { %>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0" id="tabellaStudenti">
+                <thead class="table-light">
+                  <tr>
+                    <th>Matricola</th>
+                    <th>Nome</th>
+                    <th>Corso</th>
+                    <th>Username</th>
+                    <th class="text-center">Azioni</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% studenti.forEach(s => { %>
+                    <tr>
+                      <td class="small">
+                        <span class="fw-semibold"><%= s.matricola %></span>
+                      </td>
+                      <td class="small">
+                        <%= s.nome %> <%= s.cognome %>
+                      </td>
+                      <td class="small">
+                        <%= s.corso || '-' %>
+                      </td>
+                      <td class="small">
+                        <code class="small"><%= s.username %></code>
+                      </td>
+                      <td class="text-center">
+                        <!-- Bottoni azione -->
+                        <div class="d-flex justify-content-center gap-1">
+                          
+                            <a 
+                            href="/amministratore/studenti/<%= s.matricola %>/modifica" 
+                            class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil-square me-1"></i>
+                            Modifica
+                            </a>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Filtro
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputFiltro = document.getElementById('filtroStudenti');
+    const tabella = document.getElementById('tabellaStudenti');
+
+    if (!inputFiltro || !tabella) return;
+
+    inputFiltro.addEventListener('input', function() {
+      const filtro = this.value.toLowerCase();
+      const righe = tabella.querySelectorAll('tbody tr');
+
+      righe.forEach(riga => {
+        const testoRiga = riga.innerText.toLowerCase();
+        if (testoRiga.includes(filtro)) {
+          riga.classList.remove('d-none');
+        } else {
+          riga.classList.add('d-none');
+        }
+      });
+    });
+  });
+</script>
+
+<%- include('../partials/footer') %>

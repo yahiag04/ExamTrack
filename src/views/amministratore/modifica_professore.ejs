@@ -1,0 +1,163 @@
+<%- include('../partials/header', { title: 'Modifica Professore - ExamTrack' }) %>
+
+<div class="container py-4">
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+
+          <div>
+            <h1 class="h4 fw-bold mb-1">Modifica Professore</h1>
+            <p class="text-muted small mb-0">
+              Aggiorna le informazioni del docente.
+            </p>
+          </div>
+
+          <a href="/amministratore/professori" class="btn btn-sm btn-outline-secondary mt-3 mt-md-0">
+            <i class="bi bi-arrow-left me-1"></i>
+            Torna all’elenco
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+          <% if (error) { %>
+            <div class="alert alert-danger small"><%= error %></div>
+          <% } %>
+
+          <% if (success) { %>
+            <div class="alert alert-success small"><%= success %></div>
+          <% } %>
+
+          <!-- FORM MODIFICA -->
+          <form method="POST" action="/amministratore/professori/<%= professore.id_prof %>/modifica">
+
+            <!-- DATI ANAGRAFICI -->
+            <h2 class="h6 fw-bold mb-3">Dati del professore</h2>
+
+            <div class="mb-3">
+              <label class="form-label">Nome</label>
+              <input 
+                type="text" 
+                class="form-control"
+                value="<%= professore.nome %>"
+                readonly
+              >
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Cognome</label>
+              <input 
+                type="text" 
+                class="form-control"
+                value="<%= professore.cognome %>"
+                readonly
+              >
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email istituzionale</label>
+              <input 
+                type="text" 
+                class="form-control"
+                value="<%= professore.email %>"
+                readonly
+              >
+            </div>
+
+            <!-- ACCOUNT UTENTE -->
+            <h2 class="h6 fw-bold mt-4 mb-3">Account utente</h2>
+
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input 
+                type="text" 
+                class="form-control"
+                value="<%= professore.username %>"
+                readonly
+              >
+            </div>
+
+            <!-- CAMBIO PASSWORD -->
+            <h2 class="h6 fw-bold mt-4 mb-3">Cambio password</h2>
+
+            <div class="alert alert-warning small py-2">
+              Lascia vuoti questi campi se non vuoi cambiare la password.
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Nuova password</label>
+              <div class="input-group">
+                <input 
+                  type="password"
+                  name="password"
+                  id="password"
+                  class="form-control"
+                  placeholder="Nuova password"
+                >
+                <button class="btn btn-outline-secondary togglePassword" type="button" data-target="#password">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Conferma nuova password</label>
+              <div class="input-group">
+                <input 
+                  type="password"
+                  name="confermaPassword"
+                  id="confermaPassword"
+                  class="form-control"
+                  placeholder="Conferma password"
+                >
+                <button class="btn btn-outline-secondary togglePassword" type="button" data-target="#confirmPassword">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- BOTTONI -->
+            <div class="d-flex justify-content-between align-items-center">
+
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-circle me-1"></i> 
+                Salva modifiche
+              </button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MOSTRA NASCONDI PASSWORD -->
+<script>
+  document.querySelectorAll(".togglePassword").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-target");
+      const input = document.querySelector(id);
+
+      if (input.type === "password") {
+        input.type = "text";
+        btn.innerHTML = '<i class="bi bi-eye-slash"></i>';
+      } else {
+        input.type = "password";
+        btn.innerHTML = '<i class="bi bi-eye"></i>';
+      }
+    });
+  });
+</script>
+
+<%- include('../partials/footer') %>

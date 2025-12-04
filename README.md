@@ -55,7 +55,7 @@ npm start
 
 Visit:
 ```bash
-http://localhost:3000
+http://localhost:3001
 ```
 
 ## Example Query (Backend)

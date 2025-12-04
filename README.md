@@ -97,12 +97,6 @@ examtrack/
 │── README.md
 ```
 
-## Roadmap
-- Add admin dashboard  
-- Add CSV export for exam history  
-- Add search and filters  
-- Add authentication and role-based access  
-
 ## License
 MIT License.
 

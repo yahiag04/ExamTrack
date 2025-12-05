@@ -14,14 +14,16 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+const sessionSecret = process.env.SESSION_SECRET || 'dev-secret';
 
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave:false,
-        saveUninitialized:false,
-    })
-);
+app.use(session({
+  secret: sessionSecret,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, 
+  },
+}));
 
 
 //ROTTE

@@ -61,8 +61,6 @@ router.get('/creazione_corso', isAuthenticated, isAdmin, async(req,res)=>{
   const result = await db.query(`
     SELECT *
     FROM professore
-    JOIN utente ON professore.id_utente = utente.id_utente
-    WHERE utente.attivo = TRUE
     `);
     
   const professori = result.rows;

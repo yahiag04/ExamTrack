@@ -270,7 +270,6 @@ router.post('/creazione_corso', isAuthenticated, isAdmin, async(req,res)=>{
     SELECT *
     FROM professore
     JOIN utente ON professore.id_utente = utente.id_utente
-    WHERE utente.attivo = TRUE
     `);
     
   const professori = resultprof.rows;

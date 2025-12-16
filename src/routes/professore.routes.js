@@ -267,6 +267,7 @@ router.post('/nuovo_voto', isAuthenticated,isProfessore, async(req,res)=>{
           AND t.tipo_tentativo = 'completo'
           AND t.verbalizzazione = FALSE
           AND t.visibile_studente = TRUE
+          AND t.presenza = TRUE
         LIMIT 1
       `, [matricola, insegnamento.codice_insegnamento]);
 

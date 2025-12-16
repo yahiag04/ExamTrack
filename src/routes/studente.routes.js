@@ -93,7 +93,7 @@ router.get('/', isAuthenticated, isStudente, async (req,res)=>{
           tentativi,
           media:media,
           cfuTotali,
-          totTentativi: totaleTentativi,
+          totTentativi: esamiVerbalizzati.rows.length,
           esamiVerbalizzati: esamiVerbalizzati.rows
         });
       

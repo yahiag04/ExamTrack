@@ -4,8 +4,6 @@ const db = require("../models/db");
 const bcrypt = require("bcryptjs");
 const { isAuthenticated, isAdmin } = require("../middlewares/auth");
 
-
-
 ///////////ROTTE AMMINISTRAZIONE/////////////
 
 //GET AMMINISTRAZIONE
@@ -61,6 +59,10 @@ router.get('/creazione_corso', isAuthenticated, isAdmin, async(req,res)=>{
   const result = await db.query(`
     SELECT *
     FROM professore
+<<<<<<< HEAD
+=======
+    JOIN utente ON professore.id_utente = utente.id_utente
+>>>>>>> 1794028 (containerization)
     `);
     
   const professori = result.rows;
@@ -269,7 +271,10 @@ router.post('/creazione_corso', isAuthenticated, isAdmin, async(req,res)=>{
   const resultprof = await db.query(`
     SELECT *
     FROM professore
+<<<<<<< HEAD
     JOIN utente ON professore.id_utente = utente.id_utente
+=======
+>>>>>>> 1794028 (containerization)
     `);
     
   const professori = resultprof.rows;

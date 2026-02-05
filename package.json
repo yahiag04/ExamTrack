@@ -8,7 +8,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+<<<<<<< HEAD
     "start": "node index.js"
+=======
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+>>>>>>> 1794028 (containerization)
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -17,6 +22,7 @@
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "nodemon": "^3.1.11",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "prom-client": "^15.1.0"
   }
 }

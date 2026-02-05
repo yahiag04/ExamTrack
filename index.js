@@ -8,6 +8,13 @@ const session = require('express-session');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Metrics (only if enabled)
+if (process.env.METRICS_ENABLED === 'true') {
+  const { metricsMiddleware, metricsHandler } = require('./src/middlewares/metrics');
+  app.use(metricsMiddleware);
+  app.get('/metrics', metricsHandler);
+}
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 

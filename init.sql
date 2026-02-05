@@ -67,6 +67,3 @@ CREATE INDEX IF NOT EXISTS idx_tentativo_id_prof ON tentativo(id_prof);
 CREATE INDEX IF NOT EXISTS idx_studente_id_utente ON studente(id_utente);
 CREATE INDEX IF NOT EXISTS idx_professore_id_utente ON professore(id_utente);
 
--- Sample data for testing (password is 'password123' hashed with bcrypt)
--- You can remove this section in production
-

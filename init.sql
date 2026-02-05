@@ -70,11 +70,3 @@ CREATE INDEX IF NOT EXISTS idx_professore_id_utente ON professore(id_utente);
 -- Sample data for testing (password is 'password123' hashed with bcrypt)
 -- You can remove this section in production
 
--- Admin user (password: admin123)
-INSERT INTO utente (username, email, password, ruolo, data_creazione)
-VALUES ('admin', 'admin@examtrack.it', '$2a$10$8K1p/a0dR1xqM8QZKlmE4OqYF.q5lJl6Jl6Jl6Jl6Jl6Jl6Jl6Jl6', 'amministratore', CURRENT_DATE)
-ON CONFLICT (username) DO NOTHING;
-
-INSERT INTO amministratore (nome, cognome, id_utente)
-SELECT 'Admin', 'Sistema', id_utente FROM utente WHERE username = 'admin'
-ON CONFLICT DO NOTHING;
